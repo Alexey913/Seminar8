@@ -16,7 +16,7 @@ try:
     elif type_menu == 3:
         change_base.delete_card()
     elif type_menu == 4:
-        change_base.change.card()
+        change_base.change_card()
     elif type_menu == 5:
         find_data.find_p()
     else:
