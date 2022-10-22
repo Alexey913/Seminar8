@@ -64,7 +64,8 @@ def check_comment(name):
 
 
 def menu_changes():
-    menu = """{-}*50\n
+    print('-'*50)
+    menu = """
     Выберите значения, которое которое нужно изменить.
     для изменения фамилии нажмите:                  1
     для изменения имени нажмите:                    2
@@ -83,13 +84,17 @@ def menu_changes():
 
 def preparing_for_change():
     query = input("Для изменения карточки сотрудника введите его фамилию: ")
-    query = check_name(query)
-    with open(r'.\db.csv', 'r', encoding='utf-8') as my_file:
-        rd = my_file.readlines()
-        temp = rd.copy()
-        for i in temp:
-            if query not in i:
-                temp.remove(i)
+    name = check_name(query)
+    with open('db.csv', 'r', encoding='utf-8') as my_file:
+        rd = csv.reader(my_file, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+        temp = []
+        for line in rd:
+            temp.append(line)
+    print(temp)
+    for i in temp:
+        if i[1]!=name:
+            temp.remove(i)
+    print(temp)
     if len(temp) == 0:
         print("Такого сотрудника не найдено")
         exit()
@@ -107,9 +112,9 @@ def preparing_for_change():
         new_first_name = check_name(new_first_name)
         update(id=user_id, new_last_name=new_first_name)
     elif answer == '3':
-        new_patronimyc = input("Введите новое отчество: ")
-        new_patronimyc = check_name(new_patronimyc)
-        update(id=user_id, new_patronimyc=new_patronimyc)
+        new_patronymic = input("Введите новое отчество: ")
+        new_patronymic = check_name(new_patronymic)
+        update(id=user_id, new_patronymic=new_patronymic)
     elif answer == '4':
         new_phone = input("Введите номер телефона: ")
         new_phone = check_phone(new_phone)
@@ -119,32 +124,34 @@ def preparing_for_change():
         new_post = check_comment(new_post)
         update(id=user_id, new_post=new_post)
 
-
 def update(id, new_last_name='', new_first_name='', new_patronymic='', new_phone='', new_post=''):
-    with open(r'db.csv', 'r', encoding='utf-8') as my_file:
-        rd = csv.reader(my_file)
+    with open('db.csv', 'r', encoding='utf-8') as my_file:
         temp = []
-        for row in rd:
-            temp.append(row)
+        rd = csv.reader(my_file)
+        for line in rd:
+            if line != []:
+                temp.append(line)
+        print(temp)
         for row in temp:
-            if row[0] == id:
-                if (new_last_name != ''):
-                    del row[1]
-                    row.insert(1, new_last_name)
-                if (new_first_name != ''):
-                    del row[2]
-                    row.insert(2, new_first_name)
-                if (new_patronymic != ''):
-                    del row[3]
-                    row.indert(3, new_patronymic)
-                if (new_phone != ''):
-                    del row[4]
-                    row.insert(4, new_phone)
-                if (new_post != ''):
-                    del row[5]
-                    row.insert(5, new_post)
-    with open(r'base.csv', 'w', encoding='utf-8') as file:
-        writer = csv.writer(file)
+            if row != []:
+                if row[0] ==id:
+                    if (new_last_name != ''):
+                        del row[1]
+                        row.insert(1, new_last_name)
+                    if (new_first_name != ''):
+                        del row[2]
+                        row.insert(2, new_first_name)
+                    if (new_patronymic != ''):
+                        del row[3]
+                        row.insert(3, new_patronymic)
+                    if (new_phone != ''):
+                        del row[4]
+                        row.insert(4, new_phone)
+                    if (new_post != ''):
+                        del row[5]
+                        row.append(new_post)
+    with open('db.csv', 'w', encoding='utf-8') as my_file:
+        writer = csv.writer(my_file, quoting=csv.QUOTE_MINIMAL)
         writer.writerows(temp)
 
 
