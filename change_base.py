@@ -89,12 +89,9 @@ def preparing_for_change():
         rd = csv.reader(my_file, delimiter=',', quoting=csv.QUOTE_MINIMAL)
         temp = []
         for line in rd:
-            temp.append(line)
-    print(temp)
-    for i in temp:
-        if i[1]!=name:
-            temp.remove(i)
-    print(temp)
+            if line !=[]:
+                if line[1] == name:
+                    temp.append(line)
     if len(temp) == 0:
         print("Такого сотрудника не найдено")
         exit()
@@ -131,25 +128,28 @@ def update(id, new_last_name='', new_first_name='', new_patronymic='', new_phone
         for line in rd:
             if line != []:
                 temp.append(line)
-        print(temp)
         for row in temp:
-            if row != []:
-                if row[0] ==id:
-                    if (new_last_name != ''):
-                        del row[1]
-                        row.insert(1, new_last_name)
-                    if (new_first_name != ''):
-                        del row[2]
-                        row.insert(2, new_first_name)
-                    if (new_patronymic != ''):
-                        del row[3]
-                        row.insert(3, new_patronymic)
-                    if (new_phone != ''):
-                        del row[4]
-                        row.insert(4, new_phone)
-                    if (new_post != ''):
-                        del row[5]
-                        row.append(new_post)
+            if row[0] ==id:
+                if (new_last_name != ''):
+                    del row[1]
+                    row.insert(1, new_last_name)
+                    print(row)
+                if (new_first_name != ''):
+                    del row[2]
+                    row.insert(2, new_first_name)
+                    print(row)
+                if (new_patronymic != ''):
+                    del row[3]
+                    row.insert(3, new_patronymic)
+                    print(row)
+                if (new_phone != ''):
+                    del row[4]
+                    row.insert(4, new_phone)
+                    print(row)
+                if (new_post != ''):
+                    del row[5]
+                    row.append(new_post)
+                    print(row)
     with open('db.csv', 'w', encoding='utf-8') as my_file:
         writer = csv.writer(my_file, quoting=csv.QUOTE_MINIMAL)
         writer.writerows(temp)
