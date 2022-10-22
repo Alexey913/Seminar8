@@ -85,10 +85,13 @@ def preparing_for_change():
     query = check_name(query)
     list_for_changes = []
     with open(r'.\db.csv', 'r', encoding='utf-8') as my_file:
-        rd = my_file.readline()   
+        rd = my_file.readline()
+        temp = []   
         for row in rd:
-            if query in row:
-                list_for_changes.append(row)
+            temp.append([row])
+        for i in temp:
+            if query in i:
+                list_for_changes.append(i)
     if len(list_for_changes) == 0:
         print("Такого сотрудника не найдено")
         exit()
@@ -119,21 +122,32 @@ def preparing_for_change():
         new_post = check_comment(new_post)
         update(id=user_id, new_post = new_post)
     
-def update(id = id, new_last_name = '', new_first_name = '', new_patronymic = '', new_phone = '', new_post = ''):
-    with open(r'db.csv', 'w', newline='') as my_file:
-        wr = csv.writer(my_file, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+def update(id, new_last_name = '', new_first_name = '', new_patronymic = '', new_phone = '', new_post = ''):
+    with open(r'db.csv', 'r', newline='') as my_file:
+        wr = csv.reader(my_file)
+        temp = []
         for row in wr:
-            if(row[0] == id):
+            temp.append(row)              
+            if (temp[-1][0] == id):
+                anylist = temp.pop()
                 if(new_last_name != ''):
-                    row[1] = new_last_name
+                    del anylist[1]
+                    anylist.insert(1, new_last_name)
                 if(new_first_name != ''):
-                    row[2] = new_first_name
+                    del anylist[2]
+                    anylist.insert(2, new_first_name)
                 if(new_patronymic != ''):
-                    row[3] = new_patronymic
+                    del anylist[3]
+                    anylist.indert(3, new_patronymic)
                 if(new_phone != ''):
-                    row[4] = new_phone  
+                    del anylist[4]
+                    anylist.insert(4, new_phone)  
                 if(new_post != ''):
-                    row[5] = new_post
-            wr.writerow(row)
+                    del anylist[5]
+                    anylist.insert(5, new_post)
+                temp.append(anylist)
+    with open(r'base.csv') as file:
+            writer = csv.writer(file)
+            writer.writerows(temp)
 
 preparing_for_change()
