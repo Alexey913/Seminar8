@@ -13,7 +13,7 @@ import csv
 
 card = ['Иванов', 'Иван', 'Иванович', '89060000000', '20.05.2020', 'слесарь']
 
-
+from log import *
 def write_to_csv(anylist):
     with open('db.csv', 'r', encoding='utf8', newline='') as myfile:
         rd = myfile.readlines()
@@ -24,5 +24,6 @@ def write_to_csv(anylist):
         wr = csv.writer(myfile, quoting=csv.QUOTE_MINIMAL)
         wr.writerow(anylist)
 
+    logger.debug('change_base.py/write_to_csv')
 
 write_to_csv(card)

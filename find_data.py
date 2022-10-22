@@ -1,3 +1,5 @@
+from log import *
+
 def find_p():
     with open('directory.csv', 'w', encoding='utf-8') as data1:
         data1.write(f"{client}\n")
@@ -19,3 +21,5 @@ def find_p():
                 print(f"\033[32m {line} \033[39m")
         if flag: print('no name given')
     search(data)
+    
+    logger.debug(f'find_data.py / find_p / {name} - поиск клиента')
