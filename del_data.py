@@ -1,4 +1,5 @@
 import csv
+from log import *
 
 def del_data():
     name = input('Введите: ')
@@ -15,3 +16,5 @@ def del_data():
         with open(r'base.csv') as file:
             writer = csv.writer(file)
             writer.writerows(temp)
+            
+            logger.debug(f'del_data.py / del_data / {name} - Запись удалена')
